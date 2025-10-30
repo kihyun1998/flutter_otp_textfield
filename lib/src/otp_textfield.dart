@@ -28,7 +28,10 @@ class OTPTextField extends StatefulWidget {
   /// Spacing between fields
   final double fieldSpacing;
 
-  /// Extra spacing in the center (e.g., between 3rd and 4th field)
+  /// Extra spacing in the center (applied at middle index).
+  /// For 6 fields: spacing between 3rd and 4th field.
+  /// For 4 fields: spacing between 2nd and 3rd field.
+  /// If null, no extra center spacing is applied.
   final double? centerSpacing;
 
   /// Text style for the input
@@ -254,10 +257,11 @@ class _OTPTextFieldState extends State<OTPTextField> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(widget.controllers.length, (index) {
-        // Add extra spacing between 3rd and 4th fields (index 3)
-        final isMiddleGap = index == 3;
+        // Add extra spacing in the middle if centerSpacing is provided
+        final middleIndex = widget.controllers.length ~/ 2;
+        final isMiddleGap = widget.centerSpacing != null && index == middleIndex;
         final leftMargin = isMiddleGap
-            ? widget.centerSpacing ?? widget.fieldSpacing * 1.5
+            ? widget.centerSpacing!
             : widget.fieldSpacing / 2;
 
         return Container(
