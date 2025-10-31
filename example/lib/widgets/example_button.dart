@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_textfield/flutter_otp_textfield.dart';
+import 'package:flutter_otp_widget/flutter_otp_widget.dart';
 
 import 'otp_dialog.dart';
 

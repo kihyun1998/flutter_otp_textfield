@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # OTP TextField package
-  flutter_otp_textfield:
+  flutter_otp_widget:
     path: ../
 
   # Riverpod for state management

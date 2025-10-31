@@ -71,7 +71,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_otp_textfield: ^1.0.0
+  flutter_otp_widget: ^1.0.0
 ```
 
 Then run:
@@ -83,7 +83,7 @@ flutter pub get
 ## Basic Usage
 
 ```dart
-import 'package:flutter_otp_textfield/flutter_otp_textfield.dart';
+import 'package:flutter_otp_widget/flutter_otp_widget.dart';
 
 class OTPScreen extends StatefulWidget {
   @override
@@ -307,7 +307,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Issues and Feedback
 
-Please file issues, bugs, or feature requests in our [issue tracker](https://github.com/yourusername/flutter_otp_textfield/issues).
+Please file issues, bugs, or feature requests in our [issue tracker](https://github.com/yourusername/flutter_otp_widget/issues).
 
 ## Example App
 
