@@ -159,9 +159,13 @@ class OtpDialog extends ConsumerWidget {
                 padding: const EdgeInsets.only(bottom: 16),
                 child: OutlinedButton.icon(
                   onPressed: () {
-                    ref.read(otpControllersProvider(params).notifier).clearAndFocus(focusNodes);
+                    ref
+                        .read(otpControllersProvider(params).notifier)
+                        .clearAndFocus(focusNodes);
                     ref.read(currentOtpProvider(exampleId).notifier).clear();
-                    ref.read(otpHasErrorProvider(exampleId).notifier).setError(false);
+                    ref
+                        .read(otpHasErrorProvider(exampleId).notifier)
+                        .setError(false);
                   },
                   icon: const Icon(Icons.clear_all),
                   label: const Text('Clear & Retry'),
