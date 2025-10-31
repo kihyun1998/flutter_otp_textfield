@@ -1,4 +1,4 @@
-# Flutter OTP TextField
+# Flutter OTP Widget
 
 A highly customizable OTP (One-Time Password) text field widget for Flutter with support for multiple styles, themes, and input types.
 
@@ -264,7 +264,7 @@ OTPTextField(
 | `hasError` | `bool` | false | Show error state |
 | `textCapitalization` | `TextCapitalization` | none | Text capitalization mode |
 
-See the [API documentation](https://pub.dev/documentation/flutter_otp_textfield/latest/) for complete parameter list.
+See the [API documentation](https://pub.dev/documentation/flutter_otp_widget/latest/) for complete parameter list.
 
 ## State Management Integration
 
