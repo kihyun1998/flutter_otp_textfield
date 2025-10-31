@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.1]
+
+### Improvements
+- Enhanced example app with manual clear functionality and better focus management
+
 ## [1.0.0]
 
 ### Initial Release
