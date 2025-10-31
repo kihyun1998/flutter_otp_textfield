@@ -105,9 +105,11 @@ class OtpDialog extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Enter ${fieldCount}-digit ${_getInputTypeLabel()}',
+              'Enter $fieldCount-digit ${_getInputTypeLabel()}',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.6),
               ),
               textAlign: TextAlign.center,
             ),
@@ -202,7 +204,7 @@ class OtpDialog extends ConsumerWidget {
         borderColor: Colors.purple.shade700,
         focusedBorderColor: Colors.purple.shade400,
         errorBorderColor: Colors.orange.shade300,
-        fillColor: Colors.purple.shade900.withOpacity(0.3),
+        fillColor: Colors.purple.shade900.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
       );
     } else {

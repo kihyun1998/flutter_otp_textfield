@@ -628,7 +628,7 @@ class _OTPTextFieldState extends State<OTPTextField> {
               style: widget.enabled
                   ? widget.textStyle
                   : widget.textStyle.copyWith(
-                      color: widget.textStyle.color?.withOpacity(0.5),
+                      color: widget.textStyle.color?.withValues(alpha: 0.5),
                     ),
               showCursor: widget.showCursor ?? _theme.showCursor,
               cursorColor: widget.cursorColor ?? _theme.cursorColor,

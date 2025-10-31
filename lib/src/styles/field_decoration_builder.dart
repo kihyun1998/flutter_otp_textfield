@@ -12,7 +12,6 @@ import '../otp_theme.dart';
 /// [OTPTextField] with the [OTPTextField.fieldStyle] and [OTPTextField.theme]
 /// parameters.
 ///
-/// {@nodoc}
 class FieldDecorationBuilder {
   /// Builds [InputDecoration] based on the field style and current state.
   ///
