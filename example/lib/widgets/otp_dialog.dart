@@ -88,15 +88,7 @@ class OtpDialog extends ConsumerWidget {
     final currentOtp = ref.watch(currentOtpProvider(exampleId));
     final hasError = ref.watch(otpHasErrorProvider(exampleId));
 
-    final theme = useCustomTheme
-        ? OTPTheme.custom(
-            borderColor: Colors.purple.shade300,
-            focusedBorderColor: Colors.purple,
-            errorBorderColor: Colors.orange,
-            fillColor: Colors.purple.shade50,
-            borderRadius: BorderRadius.circular(12),
-          )
-        : null;
+    final theme = useCustomTheme ? _buildCustomTheme(context) : null;
 
     return Dialog(
       child: Padding(
@@ -106,20 +98,17 @@ class OtpDialog extends ConsumerWidget {
           children: [
             Text(
               title,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
               'Enter ${fieldCount}-digit ${_getInputTypeLabel()}',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.6),
-                  ),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
@@ -153,9 +142,9 @@ class OtpDialog extends ConsumerWidget {
                 child: Text(
                   'Wrong code! Try: 123456',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -200,6 +189,31 @@ class OtpDialog extends ConsumerWidget {
         return 'letters';
       case OTPInputType.any:
         return 'alphanumeric';
+    }
+  }
+
+  /// Builds custom theme that adapts to light/dark mode
+  OTPTheme _buildCustomTheme(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    if (isDark) {
+      // Dark mode custom theme
+      return OTPTheme.custom(
+        borderColor: Colors.purple.shade700,
+        focusedBorderColor: Colors.purple.shade400,
+        errorBorderColor: Colors.orange.shade300,
+        fillColor: Colors.purple.shade900.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(12),
+      );
+    } else {
+      // Light mode custom theme
+      return OTPTheme.custom(
+        borderColor: Colors.purple.shade300,
+        focusedBorderColor: Colors.purple,
+        errorBorderColor: Colors.orange,
+        fillColor: Colors.purple.shade50,
+        borderRadius: BorderRadius.circular(12),
+      );
     }
   }
 }

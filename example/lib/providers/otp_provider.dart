@@ -8,10 +8,7 @@ class OtpParams {
   final String exampleId;
   final int fieldCount;
 
-  const OtpParams({
-    required this.exampleId,
-    required this.fieldCount,
-  });
+  const OtpParams({required this.exampleId, required this.fieldCount});
 
   @override
   bool operator ==(Object other) =>
@@ -30,8 +27,10 @@ class OtpParams {
 class OtpControllers extends _$OtpControllers {
   @override
   List<TextEditingController> build(OtpParams params) {
-    final controllers =
-        List.generate(params.fieldCount, (_) => TextEditingController());
+    final controllers = List.generate(
+      params.fieldCount,
+      (_) => TextEditingController(),
+    );
 
     // Dispose controllers when provider is disposed
     ref.onDispose(() {
@@ -69,8 +68,7 @@ class OtpControllers extends _$OtpControllers {
 class OtpFocusNodes extends _$OtpFocusNodes {
   @override
   List<FocusNode> build(OtpParams params) {
-    final focusNodes =
-        List.generate(params.fieldCount, (_) => FocusNode());
+    final focusNodes = List.generate(params.fieldCount, (_) => FocusNode());
 
     // Dispose focus nodes when provider is disposed
     ref.onDispose(() {

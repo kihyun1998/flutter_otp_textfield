@@ -397,14 +397,14 @@ class OTPTextField extends StatefulWidget {
     this.cursorWidth,
     this.textCapitalization = TextCapitalization.none,
     this.keyboardType,
-  })  : assert(
-          controllers.length == focusNodes.length,
-          'Controllers and FocusNodes must have the same length',
-        ),
-        assert(
-          obscuringCharacter.length == 1,
-          'obscuringCharacter must be a single character',
-        );
+  }) : assert(
+         controllers.length == focusNodes.length,
+         'Controllers and FocusNodes must have the same length',
+       ),
+       assert(
+         obscuringCharacter.length == 1,
+         'obscuringCharacter must be a single character',
+       );
 
   @override
   State<OTPTextField> createState() => _OTPTextFieldState();
@@ -552,7 +552,8 @@ class _OTPTextFieldState extends State<OTPTextField> {
       children: List.generate(widget.controllers.length, (index) {
         // Add extra spacing in the middle if centerSpacing is provided
         final middleIndex = widget.controllers.length ~/ 2;
-        final isMiddleGap = widget.centerSpacing != null && index == middleIndex;
+        final isMiddleGap =
+            widget.centerSpacing != null && index == middleIndex;
         final leftMargin = isMiddleGap
             ? widget.centerSpacing!
             : widget.fieldSpacing / 2;
@@ -590,10 +591,10 @@ class _OTPTextFieldState extends State<OTPTextField> {
                     // Move cursor to end
                     widget.controllers[index - 1].selection =
                         TextSelection.fromPosition(
-                      TextPosition(
-                        offset: widget.controllers[index - 1].text.length,
-                      ),
-                    );
+                          TextPosition(
+                            offset: widget.controllers[index - 1].text.length,
+                          ),
+                        );
                     return KeyEventResult.handled;
                   }
                 }
@@ -604,10 +605,10 @@ class _OTPTextFieldState extends State<OTPTextField> {
                     // Move cursor to end
                     widget.controllers[index + 1].selection =
                         TextSelection.fromPosition(
-                      TextPosition(
-                        offset: widget.controllers[index + 1].text.length,
-                      ),
-                    );
+                          TextPosition(
+                            offset: widget.controllers[index + 1].text.length,
+                          ),
+                        );
                     return KeyEventResult.handled;
                   }
                 }
@@ -640,8 +641,9 @@ class _OTPTextFieldState extends State<OTPTextField> {
               },
               onTap: () {
                 // Move cursor to end when tapped
-                widget.controllers[index].selection =
-                    TextSelection.fromPosition(
+                widget
+                    .controllers[index]
+                    .selection = TextSelection.fromPosition(
                   TextPosition(offset: widget.controllers[index].text.length),
                 );
               },

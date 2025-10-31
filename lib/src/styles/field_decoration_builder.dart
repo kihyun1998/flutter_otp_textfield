@@ -75,10 +75,7 @@ class FieldDecorationBuilder {
       isFocused: isFocused,
       hasError: hasError,
     );
-    final fillColor = _getFillColor(
-      theme: theme,
-      enabled: enabled,
-    );
+    final fillColor = _getFillColor(theme: theme, enabled: enabled);
 
     return InputDecoration(
       counterText: '',
@@ -87,31 +84,19 @@ class FieldDecorationBuilder {
       contentPadding: const EdgeInsets.symmetric(vertical: 12),
       border: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
       disabledBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
     );
   }
@@ -132,10 +117,7 @@ class FieldDecorationBuilder {
     final borderWidth = hasError
         ? theme.errorBorderWidth
         : (isFocused ? theme.underlineWidth : theme.borderWidth);
-    final fillColor = _getFillColor(
-      theme: theme,
-      enabled: enabled,
-    );
+    final fillColor = _getFillColor(theme: theme, enabled: enabled);
 
     return InputDecoration(
       counterText: '',
@@ -143,28 +125,16 @@ class FieldDecorationBuilder {
       fillColor: fillColor,
       contentPadding: const EdgeInsets.symmetric(vertical: 12),
       border: UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
       enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
       focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
       disabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
     );
   }
@@ -188,10 +158,7 @@ class FieldDecorationBuilder {
       isFocused: isFocused,
       hasError: hasError,
     );
-    final fillColor = _getFillColor(
-      theme: theme,
-      enabled: enabled,
-    );
+    final fillColor = _getFillColor(theme: theme, enabled: enabled);
 
     // Calculate circular border radius based on field width
     final circularRadius = fieldWidth != null
@@ -205,31 +172,19 @@ class FieldDecorationBuilder {
       contentPadding: const EdgeInsets.symmetric(vertical: 12),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(circularRadius),
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(circularRadius),
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(circularRadius),
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(circularRadius),
-        borderSide: BorderSide(
-          color: borderColor,
-          width: borderWidth,
-        ),
+        borderSide: BorderSide(color: borderColor, width: borderWidth),
       ),
     );
   }
