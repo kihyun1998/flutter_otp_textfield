@@ -6,77 +6,370 @@ import 'enums/otp_input_type.dart';
 import 'otp_theme.dart';
 import 'styles/field_decoration_builder.dart';
 
+/// A customizable OTP (One-Time Password) text field widget.
+///
+/// This widget creates multiple text fields for entering OTP codes with
+/// various styling options, automatic focus management, and keyboard navigation.
+///
+/// ## Basic Usage
+///
+/// ```dart
+/// final controllers = List.generate(6, (_) => TextEditingController());
+/// final focusNodes = List.generate(6, (_) => FocusNode());
+///
+/// OTPTextField(
+///   controllers: controllers,
+///   focusNodes: focusNodes,
+///   textStyle: TextStyle(fontSize: 24),
+///   onCompleted: (otp) => print('OTP: $otp'),
+/// )
+/// ```
+///
+/// ## Styling Options
+///
+/// The widget supports multiple visual styles through [fieldStyle]:
+/// - [OTPFieldStyle.box] - Box-shaped fields (default)
+/// - [OTPFieldStyle.underline] - Underlined fields
+/// - [OTPFieldStyle.circle] - Circular fields
+///
+/// ## Input Types
+///
+/// Control what characters are allowed via [inputType]:
+/// - [OTPInputType.number] - Only numeric digits (default)
+/// - [OTPInputType.text] - Only alphabetic characters
+/// - [OTPInputType.any] - Both numbers and letters
+///
+/// ## Theming
+///
+/// Customize appearance using [theme] or let it automatically adapt
+/// to the current [ThemeData.brightness]:
+///
+/// ```dart
+/// OTPTextField(
+///   theme: OTPTheme.custom(
+///     borderColor: Colors.blue,
+///     focusedBorderColor: Colors.blueAccent,
+///   ),
+/// )
+/// ```
+///
+/// See also:
+/// - [OTPTheme] for detailed theming options
+/// - [OTPFieldStyle] for available visual styles
+/// - [OTPInputType] for input type options
 class OTPTextField extends StatefulWidget {
-  /// List of text controllers for each field
+  /// The list of text controllers for each OTP field.
+  ///
+  /// Must have the same length as [focusNodes]. You are responsible for
+  /// creating and disposing these controllers.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controllers = List.generate(6, (_) => TextEditingController());
+  /// // ... use in widget
+  /// // Don't forget to dispose:
+  /// @override
+  /// void dispose() {
+  ///   for (var controller in controllers) {
+  ///     controller.dispose();
+  ///   }
+  ///   super.dispose();
+  /// }
+  /// ```
   final List<TextEditingController> controllers;
 
-  /// List of focus nodes for each field
+  /// The list of focus nodes for each OTP field.
+  ///
+  /// Must have the same length as [controllers]. Used for managing keyboard
+  /// focus and navigation between fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// final focusNodes = List.generate(6, (_) => FocusNode());
+  /// // ... use in widget
+  /// // Don't forget to dispose:
+  /// @override
+  /// void dispose() {
+  ///   for (var node in focusNodes) {
+  ///     node.dispose();
+  ///   }
+  ///   super.dispose();
+  /// }
+  /// ```
   final List<FocusNode> focusNodes;
 
-  /// Callback when all fields are filled
+  /// Callback invoked when all OTP fields are filled.
+  ///
+  /// The callback receives the complete OTP string as a parameter.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   onCompleted: (otp) {
+  ///     print('Complete OTP: $otp');
+  ///     // Verify OTP
+  ///   },
+  /// )
+  /// ```
   final ValueChanged<String>? onCompleted;
 
-  /// Callback when any field value changes
+  /// Callback invoked whenever any field value changes.
+  ///
+  /// The callback receives the current (possibly incomplete) OTP string.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   onChange: (currentOtp) {
+  ///     print('Current value: $currentOtp');
+  ///     setState(() => _otp = currentOtp);
+  ///   },
+  /// )
+  /// ```
   final ValueChanged<String>? onChange;
 
-  /// Width of each field
+  /// The width of each OTP field.
+  ///
+  /// Defaults to 40.0 logical pixels.
   final double fieldWidth;
 
-  /// Height of each field
+  /// The height of each OTP field.
+  ///
+  /// Defaults to 50.0 logical pixels.
   final double fieldHeight;
 
-  /// Spacing between fields
+  /// The spacing between adjacent OTP fields.
+  ///
+  /// Defaults to 8.0 logical pixels. This spacing is applied between
+  /// all fields except where [centerSpacing] is used.
+  ///
+  /// See also:
+  /// - [centerSpacing] for adding extra space in the middle
   final double fieldSpacing;
 
-  /// Extra spacing in the center (applied at middle index).
-  /// For 6 fields: spacing between 3rd and 4th field.
-  /// For 4 fields: spacing between 2nd and 3rd field.
-  /// If null, no extra center spacing is applied.
+  /// Extra spacing applied at the middle of the OTP fields.
+  ///
+  /// When not null, adds extra space at the middle index (length / 2).
+  /// This is commonly used for 6-digit OTPs to group them as "XXX XXX".
+  ///
+  /// - For 6 fields: spacing between 3rd and 4th field
+  /// - For 4 fields: spacing between 2nd and 3rd field
+  /// - If null, uniform [fieldSpacing] is used throughout
+  ///
+  /// Example:
+  /// ```dart
+  /// // Create "123 456" layout
+  /// OTPTextField(
+  ///   controllers: controllers, // length 6
+  ///   focusNodes: focusNodes,
+  ///   centerSpacing: 16,
+  /// )
+  /// ```
   final double? centerSpacing;
 
-  /// Text style for the input
+  /// The text style applied to the input text.
+  ///
+  /// This is a required parameter. The style is modified when the field
+  /// is disabled (opacity reduced to 0.5).
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   textStyle: TextStyle(
+  ///     fontSize: 24,
+  ///     fontWeight: FontWeight.bold,
+  ///     color: Colors.black,
+  ///   ),
+  /// )
+  /// ```
   final TextStyle textStyle;
 
-  /// Theme for styling the fields
+  /// The theme configuration for styling the OTP fields.
+  ///
+  /// If null, automatically uses [OTPTheme.light] or [OTPTheme.dark]
+  /// based on the current [ThemeData.brightness].
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   theme: OTPTheme.custom(
+  ///     borderColor: Colors.grey,
+  ///     focusedBorderColor: Colors.blue,
+  ///     errorBorderColor: Colors.red,
+  ///     fillColor: Colors.white,
+  ///   ),
+  /// )
+  /// ```
+  ///
+  /// See also:
+  /// - [OTPTheme.light] for light theme preset
+  /// - [OTPTheme.dark] for dark theme preset
+  /// - [OTPTheme.custom] for custom themes
   final OTPTheme? theme;
 
-  /// Visual style of the fields (box, underline, circle)
+  /// The visual style of the OTP fields.
+  ///
+  /// Defaults to [OTPFieldStyle.box].
+  ///
+  /// Available styles:
+  /// - [OTPFieldStyle.box] - Box with borders on all sides
+  /// - [OTPFieldStyle.underline] - Only bottom border
+  /// - [OTPFieldStyle.circle] - Circular fields
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   fieldStyle: OTPFieldStyle.underline,
+  /// )
+  /// ```
   final OTPFieldStyle fieldStyle;
 
-  /// Type of input allowed (number, text, any)
+  /// The type of input allowed in the OTP fields.
+  ///
+  /// Defaults to [OTPInputType.number].
+  ///
+  /// Options:
+  /// - [OTPInputType.number] - Only numeric digits (0-9)
+  /// - [OTPInputType.text] - Only alphabetic characters (a-z, A-Z)
+  /// - [OTPInputType.any] - Both numbers and letters
+  ///
+  /// The keyboard type is automatically set based on this value unless
+  /// [keyboardType] is explicitly provided.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   inputType: OTPInputType.text,
+  ///   textCapitalization: TextCapitalization.characters,
+  /// )
+  /// ```
   final OTPInputType inputType;
 
-  /// Whether to obscure the text (for secure input)
+  /// Whether to obscure the text being entered.
+  ///
+  /// When true, entered characters are hidden using [obscuringCharacter].
+  /// Useful for secure PIN entry.
+  ///
+  /// Defaults to false.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   obscureText: true,
+  ///   obscuringCharacter: '●',
+  /// )
+  /// ```
   final bool obscureText;
 
-  /// Character used for obscuring text
+  /// The character used to obscure text when [obscureText] is true.
+  ///
+  /// Must be exactly one character. Defaults to '●'.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   obscureText: true,
+  ///   obscuringCharacter: '*',
+  /// )
+  /// ```
   final String obscuringCharacter;
 
-  /// Whether the fields are enabled
+  /// Whether the text fields are enabled for input.
+  ///
+  /// When false, the fields are disabled and displayed with reduced opacity.
+  /// Keyboard navigation is also disabled.
+  ///
+  /// Defaults to true.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   enabled: !isLoading,
+  /// )
+  /// ```
   final bool enabled;
 
-  /// Whether to auto-focus the first field
+  /// Whether to automatically focus the first field when the widget is built.
+  ///
+  /// Defaults to false.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   autoFocus: true, // First field receives focus immediately
+  /// )
+  /// ```
   final bool autoFocus;
 
-  /// Whether to show error state
+  /// Whether to display the error state styling.
+  ///
+  /// When true, fields are styled with [OTPTheme.errorBorderColor] and
+  /// [OTPTheme.errorBorderWidth].
+  ///
+  /// Defaults to false.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   hasError: otpIncorrect,
+  ///   theme: OTPTheme.light().copyWith(
+  ///     errorBorderColor: Colors.red,
+  ///   ),
+  /// )
+  /// ```
   final bool hasError;
 
-  /// Override cursor visibility
+  /// Overrides the cursor visibility.
+  ///
+  /// If null, uses the value from [theme]. If [theme] is also null,
+  /// uses the theme's default.
   final bool? showCursor;
 
-  /// Override cursor color
+  /// Overrides the cursor color.
+  ///
+  /// If null, uses the value from [theme]. If [theme] is also null,
+  /// uses the theme's default.
   final Color? cursorColor;
 
-  /// Override cursor height
+  /// Overrides the cursor height in logical pixels.
+  ///
+  /// If null, uses the value from [theme]. If [theme] is also null,
+  /// uses the theme's default.
   final double? cursorHeight;
 
-  /// Override cursor width
+  /// Overrides the cursor width in logical pixels.
+  ///
+  /// If null, uses the value from [theme]. If [theme] is also null,
+  /// uses 2.0.
   final double? cursorWidth;
 
-  /// Text capitalization mode
+  /// Configures how the text input should be capitalized.
+  ///
+  /// Only affects [OTPInputType.text] and [OTPInputType.any].
+  ///
+  /// Defaults to [TextCapitalization.none].
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   inputType: OTPInputType.text,
+  ///   textCapitalization: TextCapitalization.characters, // A-Z
+  /// )
+  /// ```
   final TextCapitalization textCapitalization;
 
-  /// Override keyboard type (if null, determined by inputType)
+  /// Overrides the keyboard type to show.
+  ///
+  /// If null, the keyboard type is determined by [inputType]:
+  /// - [OTPInputType.number] → [TextInputType.number]
+  /// - [OTPInputType.text] or [OTPInputType.any] → [TextInputType.text]
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   keyboardType: TextInputType.phone, // Show phone keyboard
+  /// )
+  /// ```
   final TextInputType? keyboardType;
 
   const OTPTextField({

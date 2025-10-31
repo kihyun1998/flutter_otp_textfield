@@ -3,9 +3,26 @@ import 'package:flutter/material.dart';
 import '../enums/otp_field_style.dart';
 import '../otp_theme.dart';
 
-/// Builder class for creating InputDecoration based on field style and state
+/// Internal utility for building [InputDecoration] based on field style and state.
+///
+/// This class is used internally by [OTPTextField] to create appropriate
+/// decorations for different [OTPFieldStyle] options and field states.
+///
+/// You typically don't need to use this class directly. Instead, use
+/// [OTPTextField] with the [OTPTextField.fieldStyle] and [OTPTextField.theme]
+/// parameters.
+///
+/// {@nodoc}
 class FieldDecorationBuilder {
-  /// Builds InputDecoration based on the field style and current state
+  /// Builds [InputDecoration] based on the field style and current state.
+  ///
+  /// The decoration adapts based on:
+  /// - [fieldStyle]: The visual style (box, underline, or circle)
+  /// - [theme]: Theme configuration for colors and dimensions
+  /// - [isFocused]: Whether the field currently has focus
+  /// - [hasError]: Whether to display error state
+  /// - [enabled]: Whether the field is enabled for input
+  /// - [fieldWidth]: Width of the field (used for circle style)
   static InputDecoration build({
     required OTPFieldStyle fieldStyle,
     required OTPTheme theme,

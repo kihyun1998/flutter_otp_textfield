@@ -1,50 +1,122 @@
 import 'package:flutter/material.dart';
 
-/// Theme configuration for OTP text field
+/// Theme configuration for OTP text field styling.
+///
+/// Provides comprehensive styling options for OTP fields including borders,
+/// fills, cursors, and state-specific appearances.
+///
+/// ## Usage
+///
+/// Use preset themes for quick setup:
+/// ```dart
+/// OTPTextField(
+///   theme: OTPTheme.light(), // or OTPTheme.dark()
+/// )
+/// ```
+///
+/// Or create custom themes:
+/// ```dart
+/// OTPTextField(
+///   theme: OTPTheme.custom(
+///     borderColor: Colors.grey,
+///     focusedBorderColor: Colors.blue,
+///     errorBorderColor: Colors.red,
+///     fillColor: Colors.white,
+///     borderRadius: BorderRadius.circular(12),
+///   ),
+/// )
+/// ```
+///
+/// Modify existing themes using [copyWith]:
+/// ```dart
+/// final customTheme = OTPTheme.light().copyWith(
+///   borderColor: Colors.purple,
+///   focusedBorderColor: Colors.deepPurple,
+/// );
+/// ```
+///
+/// See also:
+/// - [OTPTextField] for the main widget using this theme
+/// - [light] for light theme preset
+/// - [dark] for dark theme preset
+/// - [custom] for creating custom themes
 class OTPTheme {
-  /// Border color for inactive fields
+  /// Border color for inactive (unfocused) fields.
+  ///
+  /// This color is used when the field is neither focused nor in an error state.
   final Color borderColor;
 
-  /// Border color for focused field
+  /// Border color for the currently focused field.
+  ///
+  /// Applied when a field receives keyboard focus.
   final Color focusedBorderColor;
 
-  /// Border color for error state
+  /// Border color when [OTPTextField.hasError] is true.
+  ///
+  /// If null, falls back to [borderColor].
   final Color? errorBorderColor;
 
-  /// Border width for error state
+  /// Border width when [OTPTextField.hasError] is true.
+  ///
+  /// Defaults to 2.0.
   final double errorBorderWidth;
 
-  /// Background color for fields
+  /// Background fill color for the fields.
+  ///
+  /// If null, fields have no background fill.
   final Color? fillColor;
 
-  /// Border color for disabled fields
+  /// Border color when [OTPTextField.enabled] is false.
+  ///
+  /// If null, uses [borderColor] with reduced opacity.
   final Color? disabledBorderColor;
 
-  /// Background color for disabled fields
+  /// Background fill color when [OTPTextField.enabled] is false.
+  ///
+  /// If null, uses [fillColor] with reduced opacity.
   final Color? disabledFillColor;
 
-  /// Border width for inactive fields
+  /// Border width for inactive fields.
+  ///
+  /// Defaults to 1.5.
   final double borderWidth;
 
-  /// Border width for focused field
+  /// Border width for the focused field.
+  ///
+  /// Defaults to 2.0.
   final double focusedBorderWidth;
 
-  /// Border radius for field boxes
+  /// Corner radius for field boxes.
+  ///
+  /// Only applies to [OTPFieldStyle.box] and [OTPFieldStyle.circle].
+  /// For circles, this is overridden to create a circular shape.
+  ///
+  /// Defaults to 8.0 pixels on all corners.
   final BorderRadius borderRadius;
 
-  /// Underline width (used for underline style)
+  /// Line width for [OTPFieldStyle.underline] style.
+  ///
+  /// Defaults to 2.0.
   final double underlineWidth;
 
-  /// Whether to show cursor
+  /// Whether to show the text cursor.
+  ///
+  /// Defaults to true.
   final bool showCursor;
 
-  /// Cursor color
+  /// Color of the text cursor.
+  ///
+  /// If null, uses the theme's primary color.
   final Color? cursorColor;
 
-  /// Cursor height
+  /// Height of the text cursor in logical pixels.
+  ///
+  /// If null, uses the default cursor height.
   final double? cursorHeight;
 
-  /// Cursor width
+  /// Width of the text cursor in logical pixels.
+  ///
+  /// Defaults to 2.0.
   final double cursorWidth;
 
   const OTPTheme({
@@ -65,7 +137,23 @@ class OTPTheme {
     this.cursorWidth = 2.0,
   });
 
-  /// Light theme preset
+  /// Creates a light theme preset optimized for light backgrounds.
+  ///
+  /// Uses light gray borders and white fills by default. All parameters
+  /// are optional and can be overridden.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   theme: OTPTheme.light(
+  ///     focusedBorderColor: Colors.blue,
+  ///   ),
+  /// )
+  /// ```
+  ///
+  /// See also:
+  /// - [dark] for dark theme preset
+  /// - [custom] for full customization
   static OTPTheme light({
     Color? borderColor,
     Color? focusedBorderColor,
@@ -84,7 +172,23 @@ class OTPTheme {
     );
   }
 
-  /// Dark theme preset
+  /// Creates a dark theme preset optimized for dark backgrounds.
+  ///
+  /// Uses dark gray borders and dark fills by default. All parameters
+  /// are optional and can be overridden.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   theme: OTPTheme.dark(
+  ///     focusedBorderColor: Colors.blueAccent,
+  ///   ),
+  /// )
+  /// ```
+  ///
+  /// See also:
+  /// - [light] for light theme preset
+  /// - [custom] for full customization
   static OTPTheme dark({
     Color? borderColor,
     Color? focusedBorderColor,
@@ -103,7 +207,28 @@ class OTPTheme {
     );
   }
 
-  /// Create a custom theme
+  /// Creates a fully customizable theme.
+  ///
+  /// Requires [borderColor] and [focusedBorderColor] to be provided.
+  /// All other parameters are optional.
+  ///
+  /// Example:
+  /// ```dart
+  /// OTPTextField(
+  ///   theme: OTPTheme.custom(
+  ///     borderColor: Colors.purple.shade300,
+  ///     focusedBorderColor: Colors.purple,
+  ///     errorBorderColor: Colors.orange,
+  ///     fillColor: Colors.purple.shade50,
+  ///     borderRadius: BorderRadius.circular(12),
+  ///     underlineWidth: 3.0,
+  ///   ),
+  /// )
+  /// ```
+  ///
+  /// See also:
+  /// - [light] for a light theme preset
+  /// - [dark] for a dark theme preset
   static OTPTheme custom({
     required Color borderColor,
     required Color focusedBorderColor,
@@ -140,7 +265,19 @@ class OTPTheme {
     );
   }
 
-  /// Copy with method for creating modified themes
+  /// Creates a copy of this theme with the given fields replaced.
+  ///
+  /// Useful for modifying preset themes or creating theme variations.
+  /// Any parameter not provided will keep its current value.
+  ///
+  /// Example:
+  /// ```dart
+  /// final baseTheme = OTPTheme.light();
+  /// final customTheme = baseTheme.copyWith(
+  ///   focusedBorderColor: Colors.green,
+  ///   borderRadius: BorderRadius.circular(16),
+  /// );
+  /// ```
   OTPTheme copyWith({
     Color? borderColor,
     Color? focusedBorderColor,
