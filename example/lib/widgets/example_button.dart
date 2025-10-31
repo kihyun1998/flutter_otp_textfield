@@ -15,6 +15,7 @@ class ExampleButton extends StatelessWidget {
   final bool showErrorDemo;
   final bool useCustomTheme;
   final int fieldCount;
+  final bool showClearButton;
 
   const ExampleButton({
     super.key,
@@ -29,6 +30,7 @@ class ExampleButton extends StatelessWidget {
     this.showErrorDemo = false,
     this.useCustomTheme = false,
     this.fieldCount = 6,
+    this.showClearButton = false,
   });
 
   @override
@@ -49,6 +51,7 @@ class ExampleButton extends StatelessWidget {
               showErrorDemo: showErrorDemo,
               useCustomTheme: useCustomTheme,
               fieldCount: fieldCount,
+              showClearButton: showClearButton,
             ),
           );
         },

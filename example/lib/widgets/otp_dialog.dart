@@ -14,6 +14,7 @@ class OtpDialog extends ConsumerWidget {
   final bool showErrorDemo;
   final bool useCustomTheme;
   final int fieldCount;
+  final bool showClearButton;
 
   const OtpDialog({
     super.key,
@@ -26,21 +27,24 @@ class OtpDialog extends ConsumerWidget {
     required this.showErrorDemo,
     required this.useCustomTheme,
     required this.fieldCount,
+    this.showClearButton = false,
   });
 
   void _handleConfirm(BuildContext context, WidgetRef ref, String otp) {
     final params = OtpParams(exampleId: exampleId, fieldCount: fieldCount);
 
-    if (showErrorDemo && otp != '123456') {
+    if ((showErrorDemo || showClearButton) && otp != '123456') {
       // Show error
       ref.read(otpHasErrorProvider(exampleId).notifier).setError(true);
 
-      // Clear after delay
-      Future.delayed(const Duration(seconds: 1), () {
-        ref.read(otpHasErrorProvider(exampleId).notifier).setError(false);
-        ref.read(otpControllersProvider(params).notifier).clear();
-        ref.read(currentOtpProvider(exampleId).notifier).clear();
-      });
+      // Only auto-clear if not using clear button
+      if (!showClearButton) {
+        Future.delayed(const Duration(seconds: 1), () {
+          ref.read(otpHasErrorProvider(exampleId).notifier).setError(false);
+          ref.read(otpControllersProvider(params).notifier).clear();
+          ref.read(currentOtpProvider(exampleId).notifier).clear();
+        });
+      }
     } else {
       // Success
       Navigator.pop(context);
@@ -148,6 +152,23 @@ class OtpDialog extends ConsumerWidget {
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
+                ),
+              ),
+            if (showClearButton && hasError)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    ref.read(otpControllersProvider(params).notifier).clearAndFocus(focusNodes);
+                    ref.read(currentOtpProvider(exampleId).notifier).clear();
+                    ref.read(otpHasErrorProvider(exampleId).notifier).setError(false);
+                  },
+                  icon: const Icon(Icons.clear_all),
+                  label: const Text('Clear & Retry'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.orange,
+                    side: const BorderSide(color: Colors.orange),
+                  ),
                 ),
               ),
             Row(

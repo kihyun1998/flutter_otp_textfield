@@ -49,6 +49,14 @@ class OtpControllers extends _$OtpControllers {
     }
   }
 
+  /// Clear all OTP fields and focus the first field
+  void clearAndFocus(List<FocusNode> focusNodes) {
+    clear();
+    if (focusNodes.isNotEmpty) {
+      focusNodes[0].requestFocus();
+    }
+  }
+
   /// Set OTP value
   void setValue(String value) {
     final chars = value.split('');

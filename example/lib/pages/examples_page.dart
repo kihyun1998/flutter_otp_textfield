@@ -98,6 +98,15 @@ class ExamplesPage extends StatelessWidget {
             inputType: OTPInputType.number,
             fieldCount: 4,
           ),
+          ExampleButton(
+            title: 'Clear Button',
+            subtitle: 'Manual Reset',
+            icon: Icons.refresh,
+            exampleId: 'clear',
+            fieldStyle: OTPFieldStyle.box,
+            inputType: OTPInputType.number,
+            showClearButton: true,
+          ),
         ],
       ),
     );
